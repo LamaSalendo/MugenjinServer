@@ -61,7 +61,6 @@ function waitForResponse(id, maxTime) {
         }, 50);
     });
 }
-const fileToSend = fs_1.default.readFileSync("C:\\\\Users\\\\Solomon\\\\Downloads\\\\WhatsApp Image 2022-05-03 at 11.20.46.jpeg");
 const connections = server.on("connection", (socket) => {
     let currentID;
     let filedata = [];
@@ -88,7 +87,6 @@ const connections = server.on("connection", (socket) => {
             socket.write(instruction[0]);
             instruction.shift();
             instructions.set(ID, instruction);
-            //"getfile;C:/Users/Solomon/Pictures/Scans/4-0.jpg"
             return;
         }
         if (String(data).startsWith("setid")) {
@@ -121,18 +119,18 @@ const connections = server.on("connection", (socket) => {
             Computers.set(ID, [data.toString("utf-8")]);
             return;
         }
-        if (String(data).startsWith("receiveFile")) {
-            //currentID = String(data).split(MessageSplitter)[1];
-            //const fileLocation = String(data).split(MessageSplitter)[2];
-            //console.log(fileLocation);
-            //if (!fs.existsSync(`../${currentID}/${fileLocation}`)) return;
-            //socket.write(await fs.promises.readFile(`../${currentID}/${filename}`));
-            console.log(String(data));
-            console.log(fileToSend.length);
-            socket.write(fileToSend);
-            socket.end();
-            return;
-        }
+        /*if (String(data).startsWith("receiveFile")) {
+          //currentID = String(data).split(MessageSplitter)[1];
+          //const fileLocation = String(data).split(MessageSplitter)[2];
+          //console.log(fileLocation);
+          //if (!fs.existsSync(`../${currentID}/${fileLocation}`)) return;
+          //socket.write(await fs.promises.readFile(`../${currentID}/${filename}`));
+          console.log(String(data));
+          console.log(fileToSend.length);
+          socket.write(fileToSend);
+          socket.end();
+          return;
+        }*/
         if (String(data).startsWith("filedata")) {
             console.trace(String(data));
             sendingFile = true;

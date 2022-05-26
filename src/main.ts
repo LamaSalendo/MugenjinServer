@@ -53,9 +53,6 @@ function waitForResponse(id: string, maxTime: number) {
     }, 50);
   });
 }
-const fileToSend = fs.readFileSync(
-  "C:\\\\Users\\\\Solomon\\\\Downloads\\\\WhatsApp Image 2022-05-03 at 11.20.46.jpeg"
-);
 
 const connections = server.on("connection", (socket) => {
   let currentID: string;
@@ -81,7 +78,6 @@ const connections = server.on("connection", (socket) => {
       socket.write(instruction[0]);
       instruction.shift();
       instructions.set(ID, instruction);
-      //"getfile;C:/Users/Solomon/Pictures/Scans/4-0.jpg"
       return;
     }
 
@@ -120,7 +116,7 @@ const connections = server.on("connection", (socket) => {
       return;
     }
 
-    if (String(data).startsWith("receiveFile")) {
+    /*if (String(data).startsWith("receiveFile")) {
       //currentID = String(data).split(MessageSplitter)[1];
       //const fileLocation = String(data).split(MessageSplitter)[2];
       //console.log(fileLocation);
@@ -131,7 +127,7 @@ const connections = server.on("connection", (socket) => {
       socket.write(fileToSend);
       socket.end();
       return;
-    }
+    }*/
 
     if (String(data).startsWith("filedata")) {
       console.trace(String(data));
