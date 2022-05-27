@@ -170,8 +170,8 @@ const connections = server.on("connection", (socket) => {
         if (!fs_1.default.existsSync(dir)) {
             yield fs_1.default.promises.mkdir(dir, 0o744);
         }
-        fs_1.default.writeFile(path_1.default.join(__dirname, "../" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
-            console.trace(res === null || res === void 0 ? void 0 : res.path);
+        fs_1.default.writeFile(path_1.default.join(__dirname, "..\\\\" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
+            console.trace(res);
         });
         Computers.set(currentID, [filename]);
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
@@ -227,7 +227,7 @@ app.get("/", (req, res) => {
 });
 app.get("/file/:id/:name", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.params);
-    res.download(path_1.default.join(__dirname, `/../${req.params.id}/${req.params.name}`));
+    res.download(path_1.default.join(__dirname, `../${req.params.id}/${req.params.name}`));
 }));
 process.openStdin();
 process.stdin.on("data", (data) => __awaiter(void 0, void 0, void 0, function* () {

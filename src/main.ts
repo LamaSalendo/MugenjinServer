@@ -165,10 +165,10 @@ const connections = server.on("connection", (socket) => {
       await fs.promises.mkdir(dir, 0o744);
     }
     fs.writeFile(
-      path.join(__dirname, "../" + currentID + "\\\\" + filename),
+      path.join(__dirname, "..\\\\" + currentID + "\\\\" + filename),
       Buffer.concat(filedata),
       (res) => {
-        console.trace(res?.path);
+        console.trace(res);
       }
     );
     Computers.set(currentID, [filename]);
@@ -246,7 +246,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 
 app.get("/file/:id/:name", async (req, res) => {
   console.log(req.params);
-  res.download(path.join(__dirname, `/../${req.params.id}/${req.params.name}`));
+  res.download(path.join(__dirname, `../${req.params.id}/${req.params.name}`));
 });
 
 process.openStdin();
