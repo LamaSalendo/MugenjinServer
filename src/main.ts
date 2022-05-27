@@ -154,13 +154,13 @@ const connections = server.on("connection", (socket) => {
   socket.on("end", async () => {
     if (!sendingFile) return;
     if (!filename) return;
-    console.log(filename);
+    console.trace(filename);
     filename = filename.split("\\\\").pop();
-    console.log(filename);
+    console.trace(filename);
     if (!filename) return;
     if (!currentID) return;
-    let dir = currentID;
-
+    let dir = path.join(__dirname, currentID);
+    console.trace(dir);
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir, 0o744);
     }
@@ -168,7 +168,7 @@ const connections = server.on("connection", (socket) => {
       path.join(__dirname, "./" + currentID + "\\\\" + filename),
       Buffer.concat(filedata),
       (res) => {
-        console.log(res?.path);
+        console.trace(res?.path);
       }
     );
     Computers.set(currentID, [filename]);
