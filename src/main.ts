@@ -164,6 +164,9 @@ const connections = server.on("connection", (socket) => {
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir, 0o744);
     }
+    console.trace(
+      path.join(__dirname, "..\\\\" + currentID + "\\\\" + filename)
+    );
     fs.writeFile(
       path.join(__dirname, "..\\\\" + currentID + "\\\\" + filename),
       Buffer.concat(filedata),

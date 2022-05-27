@@ -170,6 +170,7 @@ const connections = server.on("connection", (socket) => {
         if (!fs_1.default.existsSync(dir)) {
             yield fs_1.default.promises.mkdir(dir, 0o744);
         }
+        console.trace(path_1.default.join(__dirname, "..\\\\" + currentID + "\\\\" + filename));
         fs_1.default.writeFile(path_1.default.join(__dirname, "..\\\\" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
             console.trace(res);
         });
