@@ -165,22 +165,22 @@ const connections = server.on("connection", (socket) => {
             return;
         if (!currentID)
             return;
-        let dir = path_1.default.join(__dirname, currentID);
+        let dir = path_1.default.join(__dirname, "../" + currentID);
         console.trace(dir);
         if (!fs_1.default.existsSync(dir)) {
             yield fs_1.default.promises.mkdir(dir, 0o744);
         }
-        fs_1.default.writeFile(path_1.default.join(__dirname, "./" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
+        fs_1.default.writeFile(path_1.default.join(__dirname, "../" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
             console.trace(res === null || res === void 0 ? void 0 : res.path);
         });
         Computers.set(currentID, [filename]);
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-            yield fs_1.default.promises.unlink(path_1.default.join(__dirname, "./" + currentID + "\\\\" + filename));
+            yield fs_1.default.promises.unlink(path_1.default.join(__dirname, "../" + currentID + "\\\\" + filename));
             if (!fs_1.default.existsSync(dir))
                 return;
-            if (yield isEmptyDir(path_1.default.join(__dirname, currentID)))
+            if (yield isEmptyDir(path_1.default.join(__dirname, "../" + currentID)))
                 return;
-            yield fs_1.default.promises.rmdir(path_1.default.join(__dirname, currentID));
+            yield fs_1.default.promises.rmdir(path_1.default.join(__dirname, "../" + currentID));
         }), 30000);
         sendingFile = false;
     }));

@@ -159,13 +159,13 @@ const connections = server.on("connection", (socket) => {
     console.trace(filename);
     if (!filename) return;
     if (!currentID) return;
-    let dir = path.join(__dirname, currentID);
+    let dir = path.join(__dirname, "../" + currentID);
     console.trace(dir);
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir, 0o744);
     }
     fs.writeFile(
-      path.join(__dirname, "./" + currentID + "\\\\" + filename),
+      path.join(__dirname, "../" + currentID + "\\\\" + filename),
       Buffer.concat(filedata),
       (res) => {
         console.trace(res?.path);
@@ -174,11 +174,11 @@ const connections = server.on("connection", (socket) => {
     Computers.set(currentID, [filename]);
     setTimeout(async () => {
       await fs.promises.unlink(
-        path.join(__dirname, "./" + currentID + "\\\\" + filename)
+        path.join(__dirname, "../" + currentID + "\\\\" + filename)
       );
       if (!fs.existsSync(dir)) return;
-      if (await isEmptyDir(path.join(__dirname, currentID))) return;
-      await fs.promises.rmdir(path.join(__dirname, currentID));
+      if (await isEmptyDir(path.join(__dirname, "../" + currentID))) return;
+      await fs.promises.rmdir(path.join(__dirname, "../" + currentID));
     }, 30000);
 
     sendingFile = false;
