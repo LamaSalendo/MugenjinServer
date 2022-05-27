@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const path_1 = __importDefault(require("path"));
-const express_1 = __importDefault(require("express"));
-const http_1 = __importDefault(require("http"));
-const fs_1 = __importDefault(require("fs"));
-const net_1 = __importDefault(require("net"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const express_1 = __importDefault(require("express"));
+const fs_1 = __importDefault(require("fs"));
+const http_1 = __importDefault(require("http"));
+const net_1 = __importDefault(require("net"));
+const path_1 = __importDefault(require("path"));
 const socketio = require("socket.io");
 const server = new net_1.default.Server();
 const PORT = 8081;
@@ -169,16 +169,17 @@ const connections = server.on("connection", (socket) => {
         if (!fs_1.default.existsSync(dir)) {
             yield fs_1.default.promises.mkdir(dir, 0o744);
         }
-        fs_1.default.writeFile("./" + currentID + "\\\\" + filename, Buffer.concat(filedata), (res) => {
+        fs_1.default.writeFile(path_1.default.join(__dirname, "./" + currentID + "\\\\" + filename), Buffer.concat(filedata), (res) => {
             console.log(res === null || res === void 0 ? void 0 : res.path);
         });
         Computers.set(currentID, [filename]);
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-            yield fs_1.default.promises.unlink("./" + currentID + "\\\\" + filename);
+            yield fs_1.default.promises.unlink(path_1.default.join(__dirname, "./" + currentID + "\\\\" + filename));
             if (!fs_1.default.existsSync(dir))
                 return;
-            if (yield isEmptyDir(currentID))
-                yield fs_1.default.promises.rmdir(currentID);
+            if (yield isEmptyDir(path_1.default.join(__dirname, currentID)))
+                return;
+            yield fs_1.default.promises.rmdir(path_1.default.join(__dirname, currentID));
         }), 30000);
         sendingFile = false;
     }));
@@ -225,7 +226,7 @@ app.get("/", (req, res) => {
 });
 app.get("/file/:id/:name", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.params);
-    res.download(__dirname + `/../${req.params.id}/${req.params.name}`);
+    res.download(path_1.default.join(__dirname, `/../${req.params.id}/${req.params.name}`));
 }));
 process.openStdin();
 process.stdin.on("data", (data) => __awaiter(void 0, void 0, void 0, function* () {

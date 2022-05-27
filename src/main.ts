@@ -1,14 +1,15 @@
-import { randomUUID } from "crypto";
-import { Socket } from "dgram";
-import path from "path";
 import Computer from "./Computer";
-import express from "express";
 import { Server } from "socket.io";
-import http from "http";
-import fs from "fs";
-import net from "net";
+import { Socket } from "dgram";
 import bodyParser from "body-parser";
+import express from "express";
+import fs from "fs";
+import http from "http";
+import net from "net";
+import path from "path";
+import { randomUUID } from "crypto";
 import { resolveModuleName } from "typescript";
+
 const socketio = require("socket.io");
 const server = new net.Server();
 
@@ -164,7 +165,7 @@ const connections = server.on("connection", (socket) => {
       await fs.promises.mkdir(dir, 0o744);
     }
     fs.writeFile(
-      "./" + currentID + "\\\\" + filename,
+      path.join(__dirname, "./" + currentID + "\\\\" + filename),
       Buffer.concat(filedata),
       (res) => {
         console.log(res?.path);
@@ -172,9 +173,12 @@ const connections = server.on("connection", (socket) => {
     );
     Computers.set(currentID, [filename]);
     setTimeout(async () => {
-      await fs.promises.unlink("./" + currentID + "\\\\" + filename);
+      await fs.promises.unlink(
+        path.join(__dirname, "./" + currentID + "\\\\" + filename)
+      );
       if (!fs.existsSync(dir)) return;
-      if (await isEmptyDir(currentID)) await fs.promises.rmdir(currentID);
+      if (await isEmptyDir(path.join(__dirname, currentID))) return;
+      await fs.promises.rmdir(path.join(__dirname, currentID));
     }, 30000);
 
     sendingFile = false;
@@ -242,7 +246,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 
 app.get("/file/:id/:name", async (req, res) => {
   console.log(req.params);
-  res.download(__dirname + `/../${req.params.id}/${req.params.name}`);
+  res.download(path.join(__dirname, `/../${req.params.id}/${req.params.name}`));
 });
 
 process.openStdin();
