@@ -247,3 +247,6 @@ process.stdin.on("data", (data) => __awaiter(void 0, void 0, void 0, function* (
 httpserver.listen(PORT, () => {
     console.log(`Listening on port: ${PORT}`);
 });
+process.on('uncaughtException', err => {
+    console.error(err && err.stack);
+});
